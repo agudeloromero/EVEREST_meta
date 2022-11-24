@@ -19,7 +19,7 @@ rule all:
 
 rule STAR_index:
 	input:
-		fasta = config["genome_fasta"],
+		fasta = config["genome"],
 		gtf   = config["genome_gtf"],
 	output:
 		directory(os.path.join(config["output_DIR"],"index_star")),
