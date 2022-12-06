@@ -7,18 +7,18 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 import os
 DIR = os.getcwd()
 
-configfile: "config/config.yaml"
-SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
+#configfile: "config/config.yaml"
+#SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
 
-rule all:
-	input:
-		os.path.join(config["output_DIR"], "EVEREST/multiQC_rep/trim_adaptors_multiqc_report.html"),
+#rule all:
+#	input:
+#		os.path.join(config["output_DIR"], "EVEREST/multiQC_rep/trim_adaptors_multiqc_report.html"),
 
 rule BBMAP_phix:
 	input:
 		f1 = os.path.join(config["input_DIR"], "{sample}_R1.fastq.gz"),
 		f2 = os.path.join(config["input_DIR"], "{sample}_R2.fastq.gz"),
-#		phix = config["PHIX"],
+###		phix = config["PHIX"],
 	output:
 		clean1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_clean_R1.fastq.gz"),
 		clean2 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_clean_R2.fastq.gz"),

@@ -7,15 +7,12 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 import os
 DIR = os.getcwd()
 
-configfile: "config/config.yaml"
-SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
-#MINIMAP, = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/TRIMM/{minimap}_trimm_cat_R1.fastq.gz"))
-#DUPLI,   = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{duplis}_unmapped_cat_dedup.fastq.gz"))
-#NORM,   =  glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{norms}_unmapped_cat_dedup_norm_R1.fastq.gz"))
+#configfile: "config/config.yaml"
+#SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
 
-rule all:
-	input:
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+#rule all:
+#	input:
+#		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
 
 rule MINIMAP2_index:
 	input:

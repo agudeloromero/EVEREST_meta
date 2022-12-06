@@ -7,15 +7,12 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 import os
 DIR = os.getcwd()
 
-configfile: "config/config.yaml"
-SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
-#MINIMAP, = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/TRIMM/{minimap}_trimm_cat_R1.fastq.gz"))
-#DUPLI,   = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{duplis}_unmapped_cat_dedup.fastq.gz"))
-#NORM,   =  glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{norms}_unmapped_cat_dedup_norm_R1.fastq.gz"))
+#configfile: "config/config.yaml"
+#SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
 
-rule all:
-	input:
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+#rule all:
+#	input:
+#		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
 
 rule STAR_index:
 	input:
@@ -27,7 +24,7 @@ rule STAR_index:
 		threads  = "7",
 		fragment = "49",
 	log:
-		os.path.join(config["output_DIR"],"EVEERST/logs/03_01_STAR_index.log"),
+		os.path.join(config["output_DIR"],"EVEREST/logs/03_01_STAR_index.log"),
 	benchmark:
 		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_01_STAR_index.txt")
 	conda:
@@ -36,7 +33,7 @@ rule STAR_index:
 		"star index",
 	shell:
 		(" STAR --runMode genomeGenerate \
-		--runThreadN {params.threads} \ 
+		--runThreadN {params.threads} \
 		--genomeFastaFiles {input.fasta} \
 		--sjdbGTFfile {input.gtf} \
 		--genomeDir {output} \
@@ -44,8 +41,8 @@ rule STAR_index:
 
 rule STAR_align:
 	input:
-		fq1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_pair_R1.fastq.gz"),
-		fq2 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_pair_R2.fastq.gz"),
+		fq1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R1.fastq.gz"),
+		fq2 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R2.fastq.gz"),
 		idx = os.path.join(config["output_DIR"],"index_star"),
 	output:
 		bam = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}.Aligned.toTranscriptome.out.bam"),
@@ -65,7 +62,7 @@ rule STAR_align:
 		--readFilesIn {input.fq1} {input.fq2} \
 		--runThreadN {params.threads} \
 		--genomeDir {input.idx} \
-		--outFileNamePrefix {params.prefix} \ 
+		--outFileNamePrefix {params.prefix} \
 		--readFilesCommand zcat \
 		--outSAMstrandField intronMotif \
 		--outFilterIntronMotifs None \

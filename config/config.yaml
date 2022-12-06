@@ -3,9 +3,11 @@
 ##----------------##
 
 ##-- Files
-input_DIR:  "/mnt/scratch/Projects/Phages/raw_data"
-output_DIR: "/mnt/scratch/Projects/EVEREST"
-
+#input_DIR:  "/mnt/scratch/Projects/Phages/raw_data"
+#output_DIR: "/mnt/scratch/Projects/EVEREST"
+#
+input_DIR:  "/mnt/scratch/Projects/VV/Talya_RNAeq"
+output_DIR: "/mnt/scratch/Projects/EVEREST/RNAseq"
 ##-- Sequencing
 sequencing: "PE_meta" #PE_RNA, SE_meta, SE_RNA, Long
 
@@ -13,8 +15,8 @@ sequencing: "PE_meta" #PE_RNA, SE_meta, SE_RNA, Long
 adaptor: "/mnt/scratch/Projects/Virus/adaptors/adaptors.fa"
 genome: "/mnt/scratch/Projects/Virus/genome/male.hg19.fasta"
 genome_gtf: "/mnt/scratch/Projects/Virus/genome/gencode.v19.annotation.gtf"
-MMSEQ_Viral_DB_nt: "/mnt/scratch/Projects/Virus/DB_everest/DB_MMSEQ2/viral.nt.fnaDB"
-MMSEQ_Viral_DB_aa: "/mnt/scratch/Projects/Virus/DB_everest/DB_aa_uniprot/virus_uniprot"
+MMSEQ_Viral_DB_nt: "/mnt/scratch/Projects/Virus/DB_MMSEQ2/viral.nt.fnaDB"
+MMSEQ_Viral_DB_aa: "/mnt/scratch/Projects/Virus/DB_aa_uniprot/virus_uniprot"
 VIRSORTER_DB: "/mnt/scratch/Projects/Virus/DB_virsorter/db/"
 CHECKV_DB: "/mnt/scratch/Projects/Virus/DB_checkv/checkv-db-v1.1"
 DIAMOND_DB_aa: "/mnt/scratch/Projects/Virus/DB_aa_diamond/viral_aa_diamond"
@@ -24,4 +26,4 @@ TAX_nt: "/mnt/scratch/Projects/Virus/taxonomy/"
 Prokka: "/mnt/scratch/Projects/Virus/DB_prokka/all_phrogs.hmm"
 vRhyme: "/mnt/scratch/Projects/Virus/EVEREST/vRhyme/vRhyme/vRhyme/"
 
- genome_gtf: "/SCRATCH/References/SC/refdata-cellranger-arc-GRCh38-2020-A-2.0.0/genes/genes.gtf"
+#genome_gtf: "/SCRATCH/References/SC/refdata-cellranger-arc-GRCh38-2020-A-2.0.0/genes/genes.gtf"

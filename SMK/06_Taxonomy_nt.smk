@@ -17,7 +17,7 @@ DIR = os.getcwd()
 
 rule MMSEQ_eTaxonomy_nt:
 	input:
-		fasta  = os.path.join(config["output_DIR"], "EVEREST/CHECKV/{sample}/viruses_rename.fna"),
+		fasta  = os.path.join(config["output_DIR"], "EVEREST/CHECKV/{sample}/viruses_rename.fasta"),
 		DB   = config["MMSEQ_Viral_DB_nt"],
 	output:
 		lca    = os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eTaxonomy/{sample}_tax_viral_nt_lca.tsv"),

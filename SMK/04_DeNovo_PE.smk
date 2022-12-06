@@ -7,15 +7,15 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 import os
 DIR = os.getcwd()
 
-configfile: "config/config.yaml"
-SAMPLES, = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1.fastq.gz"))
+#configfile: "config/config.yaml"
+#SAMPLES, = glob_wildcards(os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1.fastq.gz"))
 
-rule all:
-	input:
-		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_all_seqs.fasta"), sample=SAMPLES),
-		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_cluster.tsv"), sample=SAMPLES),
-		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_rep_seq.fasta"), sample=SAMPLES),
-##		expand(os.path.join(config["output_DIR"], "EVEREST/SPADES/{sample}/scaffolds.fasta"), sample = SAMPLES),
+#rule all:
+#	input:
+#		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_all_seqs.fasta"), sample=SAMPLES),
+#		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_cluster.tsv"), sample=SAMPLES),
+#		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_rep_seq.fasta"), sample=SAMPLES),
+####		expand(os.path.join(config["output_DIR"], "EVEREST/SPADES/{sample}/scaffolds.fasta"), sample = SAMPLES),
 
 rule BBMAP_merge:
 	input:

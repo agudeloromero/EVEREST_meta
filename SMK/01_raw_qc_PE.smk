@@ -7,12 +7,12 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 import os
 DIR = os.getcwd()
 
-configfile: "config/config.yaml"
-SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
+#configfile: "config/config.yaml"
+#SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
 
-rule all:
-	input:
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/raw_qc_multiqc_report.html"),
+#rule all:
+#	input:
+#		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/raw_qc_multiqc_report.html"),
 
 rule FASTQC_raw:
 	input:
