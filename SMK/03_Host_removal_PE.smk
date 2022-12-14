@@ -122,7 +122,7 @@ rule BBMAP_dup:
 		f  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup.fastq.gz"),
 	params:
 		mem = "-Xmx20000m",
-		other = "ac=f s=10 e=7 minidentity=92",
+		other = "ac=f s=5 e=5 minidentity=95",
 	log:
 		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S06_BBMAP_dup_{sample}.log"),
 	benchmark:

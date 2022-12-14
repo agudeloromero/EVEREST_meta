@@ -22,6 +22,11 @@ if config["sequencing"] == 'PE_meta':
 		include: "SMK/02_trimming_adaptors_PE.smk"
 		include: "SMK/03_Host_removal_PE.smk"
 		include: "SMK/04_DeNovo_PE.smk"
+if config["sequencing"] == 'SE_meta':
+		include: "SMK/01_raw_qc_SE.smk"
+		include: "SMK/02_trimming_adaptors_SE.smk"
+		include: "SMK/03_Host_removal_SE.smk"
+		include: "SMK/04_DeNovo_SE.smk"
 if config["sequencing"] == 'PE_RNA':
 		include: "SMK/01_raw_qc_PE.smk"
 		include: "SMK/02_trimming_adaptors_PE.smk"
