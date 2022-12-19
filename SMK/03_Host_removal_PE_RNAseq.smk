@@ -4,8 +4,8 @@ Author: Patricia Agudelo-Romero
 email : Patricia.AgudeloRomero@telethonkids.org.au
 """
 
-#import os
-#DIR = os.getcwd()
+import os
+DIR = os.getcwd()
 
 #configfile: "config/config.yaml"
 #SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))
@@ -14,67 +14,106 @@ email : Patricia.AgudeloRomero@telethonkids.org.au
 #	input:
 #		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
 
-rule STAR_index:
+rule KALLISTO_index:
 	input:
-		fasta = config["genome"],
-		gtf   = config["genome_gtf"],
+		fasta = config["transcriptome"],
 	output:
-		directory(os.path.join(config["output_DIR"],"index_star")),
-	params:
-		threads  = "7",
-		fragment = "49",
+		idx = os.path.join(config["output_DIR"],"index_kallisto/Homo_sapiens.GRCh38.idx"),
 	log:
-		os.path.join(config["output_DIR"],"EVEREST/logs/03_01_STAR_index.log"),
+		os.path.join(config["output_DIR"],"EVEREST/logs/03_01_KALLISTO_index.log"),
 	benchmark:
-		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_01_STAR_index.txt")
+		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_01_KALLISTO_index.txt")
 	conda:
-		os.path.join(DIR, "envs/star.yml"),
+		os.path.join(DIR, "envs/kallisto.yml"),
 	message:
 		"star index",
 	shell:
-		(" STAR --runMode genomeGenerate \
-		--runThreadN {params.threads} \
-		--genomeFastaFiles {input.fasta} \
-		--sjdbGTFfile {input.gtf} \
-		--genomeDir {output} \
-		--sjdbOverhang {params.fragment} ")
+		(" kallisto index -i {output.idx} {input.fasta} ")
 
-rule STAR_align:
+#rule STAR_index:
+#	input:
+#		fasta = config["genome"],
+#		gtf   = config["genome_gtf"],
+#	output:
+#		directory(os.path.join(config["output_DIR"],"index_star")),
+#	params:
+#		threads  = "7",
+#		fragment = "49",
+#	log:
+#		os.path.join(config["output_DIR"],"EVEREST/logs/03_01_STAR_index.log"),
+#	benchmark:
+#		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_01_STAR_index.txt")
+#	conda:
+#		os.path.join(DIR, "envs/star.yml"),
+#	message:
+#		"star index",
+#	shell:
+#		(" STAR --runMode genomeGenerate \
+#		--runThreadN {params.threads} \
+#		--genomeFastaFiles {input.fasta} \
+#		--sjdbGTFfile {input.gtf} \
+#		--genomeDir {output} \
+#		--sjdbOverhang {params.fragment} ")
+
+rule KALLISTO_align:
 	input:
 		fq1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R1.fastq.gz"),
 		fq2 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R2.fastq.gz"),
-		idx = os.path.join(config["output_DIR"],"index_star"),
+		idx = os.path.join(config["output_DIR"],"index_kallisto/Homo_sapiens.GRCh38.idx"),
 	output:
-		bam = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}.Aligned.toTranscriptome.out.bam"),
+		bam = os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}/pseudoalignments.bam"),
+		dir = directory(os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}")),
 	params:
 		threads = "5",
-		prefix = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}."),
 	log:
-		os.path.join(config["output_DIR"],"EVEREST/logs/03_02_STAR_align_{sample}.log"),
+		os.path.join(config["output_DIR"],"EVEREST/logs/03_02_KALLISTO_align_{sample}.log"),
 	benchmark:
-		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_02_STAR_index_{sample}.txt")
+		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_02_KALLISTO_index_{sample}.txt")
 	conda:
-		os.path.join(DIR, "envs/star.yml"),
+		os.path.join(DIR, "envs/kallisto.yml"),
 	message:
 		"star alingment",
 	shell:
-		("STAR --runMode alignReads \
-		--readFilesIn {input.fq1} {input.fq2} \
-		--runThreadN {params.threads} \
-		--genomeDir {input.idx} \
-		--outFileNamePrefix {params.prefix} \
-		--readFilesCommand zcat \
-		--outSAMstrandField intronMotif \
-		--outFilterIntronMotifs None \
-		--alignSoftClipAtReferenceEnds Yes \
-		--quantMode TranscriptomeSAM \
-		--outSAMtype BAM Unsorted \
-		--outSAMunmapped Within \
-		--genomeLoad NoSharedMemory ")
+		(" kallisto quant -i {input.idx} \
+		-o {output.dir} {input.fq1} {input.fq2} \
+		-t {params.threads} --pseudobam 2> {log} ")
+
+#rule STAR_align:
+#	input:
+#		fq1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R1.fastq.gz"),
+#		fq2 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_cat_R2.fastq.gz"),
+#		idx = os.path.join(config["output_DIR"],"index_star"),
+#	output:
+#		bam = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}.Aligned.toTranscriptome.out.bam"),
+#	params:
+#		threads = "5",
+#		prefix = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}."),
+#	log:
+#		os.path.join(config["output_DIR"],"EVEREST/logs/03_02_STAR_align_{sample}.log"),
+#	benchmark:
+#		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_02_STAR_index_{sample}.txt")
+#	conda:
+#		os.path.join(DIR, "envs/star.yml"),
+#	message:
+#		"star alingment",
+#	shell:
+#		("STAR --runMode alignReads \
+#		--readFilesIn {input.fq1} {input.fq2} \
+#		--runThreadN {params.threads} \
+#		--genomeDir {input.idx} \
+#		--outFileNamePrefix {params.prefix} \
+#		--readFilesCommand zcat \
+#		--outSAMstrandField intronMotif \
+#		--outFilterIntronMotifs None \
+#		--alignSoftClipAtReferenceEnds Yes \
+#		--quantMode TranscriptomeSAM \
+#		--outSAMtype BAM Unsorted \
+#		--outSAMunmapped Within \
+#		--genomeLoad NoSharedMemory ")
 
 rule SAMTOOLS_fastq:
 	input:
-		bam  = os.path.join(config["output_DIR"],"EVEREST/STAR/{sample}.Aligned.toTranscriptome.out.bam"),
+		bam = os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}/pseudoalignments.bam"),
 	output:
 		o1 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_R1.fastq"),
 		o2 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_R2.fastq"),
@@ -213,7 +252,7 @@ rule BBMAP_duduped_normalisation:
 	shell:
 		(" bbnorm.sh {params.mem} in={input.f1} in2={input.f2} out={output.f1} out2={output.f2} 2> {log} ")
 
-rule FASTQC_before_merge:
+rule FASTQC_unmapped:
 	input:
 		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1.fastq.gz"), os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R2.fastq.gz")], sample=SAMPLES),
 	output:
@@ -230,11 +269,11 @@ rule FASTQC_before_merge:
 	shell:
 		(" fastqc {input} -t {params.threads} --outdir {params.out_dir}  2> {log} ")
 	
-rule multiQC_before_merge:
+rule multiQC_unmapped:
 	input:
 		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1_fastqc.html"), os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R2_fastqc.html")], sample=SAMPLES),
 	output:
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_unmapped_multiqc_report.html"),
 	params:
 		in_dir = os.path.join(config["output_DIR"],"EVEREST/FASTQ"),
 	log:

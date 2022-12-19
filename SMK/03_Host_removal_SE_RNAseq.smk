@@ -12,52 +12,66 @@ DIR = os.getcwd()
 
 #rule all:
 #	input:
-#		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+#		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_unmapped_multiqc_report.html"),
 
-rule MINIMAP2_index:
+rule KALLISTO_index:
 	input:
-		fasta = config["genome"],
+		fasta = config["transcriptome"],
 	output:
-		index = os.path.join(config["output_DIR"],"index_minimap2/index"),
-	params:
-		threads = "7",
+		idx = os.path.join(config["output_DIR"],"index_kallisto/Homo_sapiens.GRCh38.idx"),
 	log:
-		os.path.join(config["output_DIR"],"EVEREST/logs/R03_S01_MINIMAP2_index.log"),
-	benchmark: 
-		os.path.join(config["output_DIR"],"EVEREST/benchmarks/R03_S01_MINIMAP2_index.txt"),
+		os.path.join(config["output_DIR"],"EVEREST/logs/03_01_KALLISTO_index.log"),
+	benchmark:
+		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_01_KALLISTO_index.txt")
 	conda:
-		os.path.join(DIR, "envs/minimap2.yml"),
+		os.path.join(DIR, "envs/kallisto.yml"),
 	message:
-		"index minimap2",
+		"star index",
 	shell:
-		(" minimap2 -t {params.threads} -d {output.index} {input.fasta} 2> {log} ")
+		(" kallisto index -i {output.idx} {input.fasta} ")
 
-rule MINIMAP2_host_removal:
+rule KALLISTO_align:
 	input:
-		p1  = os.path.join(config["output_DIR"], "EVEREST/TRIMM/{sample}_trimm_R1.fastq.gz"),
-#		p2  = os.path.join(config["output_DIR"], "EVEREST/TRIMM/{sample}_trimm_cat_R2.fastq.gz"),
-		inx = os.path.join(config["output_DIR"], "index_minimap2/index"),
+		fq1 = os.path.join(config["output_DIR"],"EVEREST/TRIMM/{sample}_trimm_R1.fastq.gz"),
+		idx = os.path.join(config["output_DIR"],"index_kallisto/Homo_sapiens.GRCh38.idx"),
+	output:
+		bam = os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}/pseudoalignments.bam"),
+		dir = directory(os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}")),
+	params:
+		threads = "5",
+	log:
+		os.path.join(config["output_DIR"],"EVEREST/logs/03_02_KALLISTO_align_{sample}.log"),
+	benchmark:
+		os.path.join(config["output_DIR"],"EVEREST/benchmarks/03_02_KALLISTO_index_{sample}.txt")
+	conda:
+		os.path.join(DIR, "envs/kallisto.yml"),
+	message:
+		"kallisto alingment",
+	shell:
+		(" kallisto quant -i {input.idx} \
+		-o {output.dir} --single -l 200 -s 20 {input.fq1} \
+		-t {params.threads} --pseudobam 2> {log} ")
+
+rule SAMTOOLS_fastq:
+	input:
+		bam = os.path.join(config["output_DIR"],"EVEREST/KALLISTO/{sample}/pseudoalignments.bam"),
 	output:
 		o1 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_R1.fastq"),
-#		o2 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_R2.fastq"),
-#		s  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_singletons.fastq"),
 	params:
-		type_m = "-ax sr --secondary=no", 
 		threads = "7",
 		type_u = "view -f 4 -h",
 		type_s = "sort -@ 7",
 		type_f = "fastq -NO -@ 7",
 	log:
-		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S02_MINIMAP2_host_removal_{sample}.log"),
+		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S02_SAMTOOLS_fastq_{sample}.log"),
 	benchmark: 
-		os.path.join(config["output_DIR"], "EVEREST/benchmarks/R03_S02_MINIMAP2_host_removal_{sample}.txt"),
+		os.path.join(config["output_DIR"], "EVEREST/benchmarks/R03_S02_SAMTOOLS_fastq_{sample}.txt"),
 	conda:
 		os.path.join(DIR, "envs/minimap2.yml"),
 	message:
-		"obtain unmapped from minimap2 and convert to fastq",
+		"obtain unmapped from kallisto and convert to fastq",
 	shell:
-		(" ( minimap2 {params.type_m} -t {params.threads} {input.inx} {input.p1} \
-		| samtools {params.type_u} - | samtools {params.type_s} \
+		(" ( samtools {params.type_u} {input.bam} | samtools {params.type_s} \
 		| samtools {params.type_f} - > {output.o1} ) &> {log} ")  
 
 rule PIGZ_fastq:
@@ -68,7 +82,7 @@ rule PIGZ_fastq:
 	params:
 		"-p 7 -5",
 	log:
-		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S05_PIGZ_fastq_{sample}.log")
+		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S05_PIGZ_fastq_{sample}.log"),
 	conda:
 		os.path.join(DIR, "envs/minimap2.yml"),
 	message:
@@ -79,7 +93,6 @@ rule PIGZ_fastq:
 rule BBMAP_dup:
 	input:
 		f1 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_R1.fastq.gz"),
-#		f2 = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_R2.fastq.gz"),
 	output:
 		f  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_dedup.fastq.gz"),
 	params:
@@ -96,32 +109,11 @@ rule BBMAP_dup:
 	shell:
 		(" dedupe.sh {params.mem} {params.other} in={input.f1} out={output.f} 2> {log} ")
 
-#rule BBMAP_deduped_reformat:
-#	input:
-#		f = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup.fastq.gz"),
-#	output:
-#		f1  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_R1.fastq.gz"),
-#		f2  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_R2.fastq.gz"),
-#	params:
-#		mem = "-Xmx20000m",
-#	log:
-#		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S07_BBMAP_dup_ref_{sample}.log"),
-#	benchmark: 
-#		os.path.join(config["output_DIR"], "EVEREST/benchmarks/S03_S07_BBMAP_dup_ref_{sample}.txt"),
-#	conda:
-#		os.path.join(DIR, "envs/BBMAP.yml"),
-#	message:
-#		"BBMAP deduped reformat",
-#	shell:
-#		(" reformat.sh {params.mem} in={input.f} out={output.f1} out2={output.f2} 2> {log} ")
-
 rule BBMAP_duduped_normalisation:
 	input:
 		f1  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_dedup.fastq.gz"),
-#		f2  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_R2.fastq.gz"),
 	output:
 		f1  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_dedup_norm_R1.fastq.gz"),
-#		f2  = os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R2.fastq.gz"),	
 	log:
 		os.path.join(config["output_DIR"], "EVEREST/logs/R03_S08_BBMAP_dup_norm_{sample}.log"),
 	benchmark: 
@@ -133,7 +125,7 @@ rule BBMAP_duduped_normalisation:
 	message:
 		"BBMAP digital normalisation",
 	shell:
-		(" bbnorm.sh {params.mem} in={input.f1} out={output.f1} 2> {log} ")
+		("  bbnorm.sh {params.mem} in={input.f1} out={output.f1} 2> {log} ")
 
 rule FASTQC_unmapped:
 	input:
@@ -154,7 +146,7 @@ rule FASTQC_unmapped:
 	
 rule multiQC_unmapped:
 	input:
-		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_dedup_norm_R1_fastqc.html")], sample=SAMPLES),
+		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_dedup_norm_R1_fastqc.html")], sample=SAMPLES),	
 	output:
 		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_unmapped_multiqc_report.html"),
 	params:

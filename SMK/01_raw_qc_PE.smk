@@ -4,8 +4,8 @@ Author: Patricia Agudelo-Romero
 email : Patricia.AgudeloRomero@telethonkids.org.au
 """
 
-import os
-DIR = os.getcwd()
+#import os
+#DIR = os.getcwd()
 
 #configfile: "config/config.yaml"
 #SAMPLES, = glob_wildcards(os.path.join(config["input_DIR"],"{sample}_R1.fastq.gz"))

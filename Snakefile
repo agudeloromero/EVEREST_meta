@@ -32,10 +32,10 @@ if config["sequencing"] == 'PE_RNA':
 		include: "SMK/02_trimming_adaptors_PE.smk"
 		include: "SMK/03_Host_removal_PE_RNAseq.smk"
 		include: "SMK/04_DeNovo_PE.smk"
-elif config["sequencing"] == 'SE':
+elif config["sequencing"] == 'SE_RNA':
 		include: "SMK/01_raw_qc_SE.smk"
 		include: "SMK/02_trimming_adaptors_SE.smk"
-		include: "SMK/03_Host_removal_SE.smk"
+		include: "SMK/03_Host_removal_SE_RNAseq.smk"
 		include: "SMK/04_DeNovo_SE.smk"
 #else:
 #		include: "SMK/01_raw_qc_Long.smk"
@@ -59,7 +59,7 @@ rule all:
 		#adaptorsQC
 		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/trim_adaptors_multiqc_report.html"),
 		#Host_removal
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_unmapped_multiqc_report.html"),
 		#DeNovo
 #		expand(os.path.join(config["output_DIR"], "EVEREST/SPADES/{sample}/scaffolds.fasta"), sample=SAMPLES),
 		expand(os.path.join(config["output_DIR"], "EVEREST/MMSEQ_eLinclust/{sample}_all_seqs.fasta"), sample=SAMPLES),

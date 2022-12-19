@@ -6,15 +6,16 @@
 #input_DIR:  "/mnt/scratch/Projects/Phages/raw_data"
 #output_DIR: "/mnt/scratch/Projects/EVEREST"
 #
-input_DIR:  "/mnt/scratch/Projects/VV/Talya_RNAeq"
-output_DIR: "/mnt/scratch/Projects/EVEREST/RNAseq"
+input_DIR:  "/mnt/scratch/Projects/EVEREST/RNA_PRJNA493096"
+output_DIR: "/mnt/scratch/Projects/EVEREST"
 ##-- Sequencing
-sequencing: "PE_meta" #PE_RNA, SE_meta, SE_RNA, Long
+sequencing: "SE_RNA" #PE_RNA, SE_RNA,  PE_meta, SE_meta, Long
 
 ##-- Databases
 adaptor: "/mnt/scratch/Projects/Virus/adaptors/adaptors.fa"
 genome: "/mnt/scratch/Projects/Virus/genome/male.hg19.fasta"
 genome_gtf: "/mnt/scratch/Projects/Virus/genome/gencode.v19.annotation.gtf"
+transcriptome: "/mnt/scratch/Projects/Virus/genome/homo_sapiens/Homo_sapiens.GRCh38.cdna.all.fa"
 MMSEQ_Viral_DB_nt: "/mnt/scratch/Projects/Virus/DB_MMSEQ2/viral.nt.fnaDB"
 MMSEQ_Viral_DB_aa: "/mnt/scratch/Projects/Virus/DB_aa_uniprot/virus_uniprot"
 VIRSORTER_DB: "/mnt/scratch/Projects/Virus/DB_virsorter/db/"

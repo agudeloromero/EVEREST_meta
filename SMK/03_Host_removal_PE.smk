@@ -173,7 +173,7 @@ rule BBMAP_duduped_normalisation:
 	shell:
 		(" bbnorm.sh {params.mem} in={input.f1} in2={input.f2} out={output.f1} out2={output.f2} 2> {log} ")
 
-rule FASTQC_before_merge:
+rule FASTQC_unmapped:
 	input:
 		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1.fastq.gz"), os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R2.fastq.gz")], sample=SAMPLES),
 	output:
@@ -190,11 +190,11 @@ rule FASTQC_before_merge:
 	shell:
 		(" fastqc {input} -t {params.threads} --outdir {params.out_dir}  2> {log} ")
 	
-rule multiQC_before_merge:
+rule multiQC_unmapped:
 	input:
 		expand([os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R1_fastqc.html"), os.path.join(config["output_DIR"], "EVEREST/FASTQ/{sample}_unmapped_cat_dedup_norm_R2_fastqc.html")], sample=SAMPLES),
 	output:
-		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_before_merge_multiqc_report.html"),
+		os.path.join(config["output_DIR"],"EVEREST/multiQC_rep/fastq_unmapped_multiqc_report.html"),
 	params:
 		in_dir = os.path.join(config["output_DIR"],"EVEREST/FASTQ"),
 	log:
