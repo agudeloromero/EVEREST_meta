@@ -6,25 +6,24 @@
 #input_DIR:  "/mnt/scratch/Projects/Phages/raw_data"
 #output_DIR: "/mnt/scratch/Projects/EVEREST"
 #
-input_DIR:  "/mnt/scratch/Projects/EVEREST/RNA_PRJNA493096"
-output_DIR: "/mnt/scratch/Projects/EVEREST"
+input_DIR:  "/mnt/scratch/PROJECT/AERIAL/CAP11520/CAP11520A1/Test/"
+output_DIR: "/mnt/scratch/PROJECT/AERIAL/"
 ##-- Sequencing
-sequencing: "SE_RNA" #PE_RNA, SE_RNA,  PE_meta, SE_meta, Long
+sequencing: "PE_meta" #PE_RNA, SE_RNA,  PE_meta, SE_meta, Long
 
 ##-- Databases
-adaptor: "/mnt/scratch/Projects/Virus/adaptors/adaptors.fa"
-genome: "/mnt/scratch/Projects/Virus/genome/male.hg19.fasta"
-genome_gtf: "/mnt/scratch/Projects/Virus/genome/gencode.v19.annotation.gtf"
-transcriptome: "/mnt/scratch/Projects/Virus/genome/homo_sapiens/Homo_sapiens.GRCh38.cdna.all.fa"
-MMSEQ_Viral_DB_nt: "/mnt/scratch/Projects/Virus/DB_MMSEQ2/viral.nt.fnaDB"
-MMSEQ_Viral_DB_aa: "/mnt/scratch/Projects/Virus/DB_aa_uniprot/virus_uniprot"
-VIRSORTER_DB: "/mnt/scratch/Projects/Virus/DB_virsorter/db/"
-CHECKV_DB: "/mnt/scratch/Projects/Virus/DB_checkv/checkv-db-v1.1"
-DIAMOND_DB_aa: "/mnt/scratch/Projects/Virus/DB_aa_diamond/viral_aa_diamond"
-BALTIMORE: "/mnt/scratch/Projects/Virus/DB_Baltimore/Baltimore_group_ICTV_2021_Generated_16052022_v2.txt"
-TAX_aa: "/mnt/scratch/Projects/Virus/TAX_aa/"
-TAX_nt: "/mnt/scratch/Projects/Virus/taxonomy/"
-Prokka: "/mnt/scratch/Projects/Virus/DB_prokka/all_phrogs.hmm"
-vRhyme: "/mnt/scratch/Projects/Virus/EVEREST/vRhyme/vRhyme/vRhyme/"
+adaptor: "/mnt/scratch/everest/DB_everest/adaptors/adaptors.fa"
+genome: "/mnt/scratch/everest/DB_everest/genome/male.hg19.fasta"
+transcriptome: "/mnt/scratch/everest/DB_everest/genome/Homo_sapiens.GRCh38.cdna.all.fa"
+MMSEQ_Viral_DB_nt: "/mnt/scratch/everest/DB_everest/DB_MMSEQ2/viral.nt.fnaDB"
+MMSEQ_Viral_DB_aa: "/mnt/scratch/everest/DB_everest/DB_aa_uniprot/virus_uniprot"
+VIRSORTER_DB: "/mnt/scratch/everest/DB_everest/DB_virsorter/db/"
+CHECKV_DB: "/mnt/scratch/everest/DB_everest/DB_checkv/checkv-db-v1.1/"
+DIAMOND_DB_aa: "/mnt/scratch/everest/DB_everest/DB_aa_diamond/viral_aa_diamond.dmnd"
+BALTIMORE: "/mnt/scratch/everest/DB_everest/DB_Baltimore/Baltimore_group_ICTV_2021_Generated_16052022_v2.txt"
+TAX_aa: "/mnt/scratch/everest/DB_everest/TAX_aa/"
+TAX_nt: "/mnt/scratch/everest/DB_everest/taxonomy/"
+Prokka: "/mnt/scratch/everest/DB_everest/DB_prokka/all_phrogs.hmm"
+#vRhyme: "/mnt/scratch/Projects/Virus/EVEREST/vRhyme/vRhyme/vRhyme/"
 
 #genome_gtf: "/SCRATCH/References/SC/refdata-cellranger-arc-GRCh38-2020-A-2.0.0/genes/genes.gtf"
