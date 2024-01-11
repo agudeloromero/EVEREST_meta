@@ -23,7 +23,7 @@ Creating conda environment for Snakemake and EVEREST from the file everest.yml, 
 **How to run EVEREST:**
 
 * Edit conf/config.yml file to point the input, output and databases directories.
-* The databases include the human genome as a reference to get rid off those reads. However, this link can be changed by an alternative genome. Example of how to download other genomes of interest can be seen here (https://github.com/agudeloromero/Reference_Genomes)[https://github.com/agudeloromero/Reference_Genomes].
+* The databases include the human genome as a reference to get rid off those reads. However, this link can be changed by an alternative genome. Example of how to download other genomes of interest can be seen here [https://github.com/agudeloromero/Reference_Genomes](https://github.com/agudeloromero/Reference_Genomes).
 ```
 $ conda activate everest
 (everest)$ snakemake --use-conda -j 2 --keep-going
