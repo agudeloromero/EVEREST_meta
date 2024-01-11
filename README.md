@@ -1,4 +1,5 @@
 **EVEREST (pipEline for Viral assEmbly and chaRactEriSaTion)**
+
 **This version, meta, is adapted for pair-end and single-end reads.**
 
 EVEREST is a snakemake pipeline for virus discovery, its main purpose is to characterise phage genomes isolates but can be also used for all the virome.
