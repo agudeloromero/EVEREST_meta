@@ -1,9 +1,9 @@
-EVEREST (pipEline for Viral assEmbly and chaRactEriSaTion)
-This version, meta, is adapted for pair-end and single-end reads.
+**EVEREST (pipEline for Viral assEmbly and chaRactEriSaTion)**
+**This version, meta, is adapted for pair-end and single-end reads.**
 
 EVEREST is a snakemake pipeline for virus discovery, its main purpose is to characterise phage genomes isolates but can be also used for all the virome.
 
-Running EVEREST:
+**Running EVEREST:**
 
 1. Clone EVEREST repository.
 ```
@@ -22,8 +22,8 @@ Creating conda environment for Snakemake and EVEREST from the file everest.yml, 
 
 **How to run EVEREST:**
 
-*Edit conf/config.yml file to point the input, output and databases directories.
-*The databases include the human genome as a reference to get rid off those reads. However, this link can be changed by an alternative genome. Example of how to download other genomes of interest can be seen here (https://github.com/agudeloromero/Reference_Genomes).
+* Edit conf/config.yml file to point the input, output and databases directories.
+* The databases include the human genome as a reference to get rid off those reads. However, this link can be changed by an alternative genome. Example of how to download other genomes of interest can be seen here (https://github.com/agudeloromero/Reference_Genomes).
 ```
 $ conda activate everest
 (everest)$ snakemake --use-conda -j 2 --keep-going
