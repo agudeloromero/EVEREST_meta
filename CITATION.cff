@@ -19,7 +19,7 @@ authors:
   orcid: "https://orcid.org/0000-0002-5386-8482"
 
 title: "EVEREST_meta"
-version: 1.0.0
-#doi: 10.5281/zenodo.1234
+version: v0.1.0
+doi: 10.5281/zenodo.7943792
 date-released: 2024-01-11
-url: "https://github.com/agudeloromero/everest_nf"
+url: "https://github.com/agudeloromero/everest_meta"
