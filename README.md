@@ -1,4 +1,4 @@
-**EVEREST (pipEline for Viral assEmbly and chaRactEriSaTion)**
+**EVEREST-meta (pipEline for Viral assEmbly and chaRactEriSaTion for METAgenomics)**
 
 **This version, meta, is adapted for pair-end and single-end reads.**
 [![DOI](https://zenodo.org/badge/569978563.svg)](https://zenodo.org/doi/10.5281/zenodo.10487445)
