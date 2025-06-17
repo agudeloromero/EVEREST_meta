@@ -15,7 +15,7 @@ EVEREST is a snakemake pipeline for virus discovery, its main purpose is to char
 2. Create everest environment
 Creating conda environment for Snakemake and EVEREST from the file everest.yml, provided in this repository.
 ```
-(base)$ conda env -n everest create -f everest.yml
+(base)$ conda create env -n everest -f everest.yml
 (base)$ conda activate everest
 (everest)$
 ```
