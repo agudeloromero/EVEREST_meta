@@ -9,7 +9,7 @@ EVEREST is a snakemake pipeline for virus discovery, its main purpose is to char
 
 1. Clone EVEREST repository.
 ```
-(base)$ git clone --recursive https://github.com/agudeloromero/EVEREST.git
+(base)$ git clone --recursive https://github.com/agudeloromero/EVEREST_meta.git
 ```
 
 2. Create everest environment
