@@ -32,3 +32,6 @@ $ conda activate everest
 ```
 Input directory should contain the .fastq.gz files to analyse ( -j option have to be set depending on number of available cores).
 Files are expected to be named as "name_R1" and "name_R2" plus extension. In case you need to rename then, please see this example (https://github.com/agudeloromero/rename_fastq_files).
+
+4. Summary files can be explored with everest shiny app:
+[https://agudeloromero.shinyapps.io/everest/](https://agudeloromero.shinyapps.io/everest/)
