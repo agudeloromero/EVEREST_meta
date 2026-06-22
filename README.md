@@ -1,8 +1,7 @@
 **EVEREST-meta (pipEline for Viral assEmbly and chaRactEriSaTion for METAgenomics)**
 
 **This version, meta, is adapted for paired-end and single-end reads.**
-
-[![DOI](https://badgen.net/badge/DOI/10.5281%2Fzenodo.10487445/blue?icon=zenodo)](https://doi.org/10.5281/zenodo.10487445)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10487445.svg)](https://doi.org/10.5281/zenodo.10487445)
 
 EVEREST is a snakemake pipeline for virus discovery, its main purpose is to characterise phage genomes isolates but can be also used for all the virome.
 
